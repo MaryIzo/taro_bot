@@ -1,0 +1,5 @@
+.ipynb_checkpoints
+.venvtaro
+hf_embeddings_model.pkl
+faiss_db
+__pycache__
