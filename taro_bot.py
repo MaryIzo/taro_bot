@@ -3,8 +3,9 @@ import os
 
 from aiogram.utils import executor
 from aiogram import Bot, Dispatcher, executor, types
-from langchain.vectorstores import FAISS
+from langchain_community.vectorstores.faiss import FAISS
 import pickle
+import requests
 
 # TG_TOKEN = TG_TOKEN_PATH.read_text().strip()
 TG_TOKEN = '7431248846:AAGT3wbL8IbdumwvdLH1ZwWHbmftV6sL2Pw'
@@ -18,18 +19,18 @@ dispatcher = Dispatcher(bot)
 
 # --------  LOAD DATABASE AND RETRIEVER --------------------
 
-with open('hf_embeddings_model.pkl', 'rb') as f:
-    loaded_embeddings_model = pickle.load(f)
+# with open('hf_embeddings_model.pkl', 'rb') as f:
+#     loaded_embeddings_model = pickle.load(f)
 
-db = FAISS.load_local(
-    "faiss_db", loaded_embeddings_model, allow_dangerous_deserialization=True
-)
+# db = FAISS.load_local(
+#     "faiss_db", loaded_embeddings_model, allow_dangerous_deserialization=True
+# )
 
-retriever = db.as_retriever(
-    search_type="mmr",  # тип поиска похожих документов
-    k=1,  # количество возвращаемых документов (Default: 4)
-    score_threshold=0.9,  # минимальный порог для поиска "similarity_score_threshold"
-)
+# retriever = db.as_retriever(
+#     search_type="mmr",  # тип поиска похожих документов
+#     k=1,  # количество возвращаемых документов (Default: 4)
+#     score_threshold=0.9,  # минимальный порог для поиска "similarity_score_threshold"
+# )
 
 # ---------------ADDITIONAL FUNCTIONS ----------------
 
@@ -110,34 +111,68 @@ async def helper(message: types.Message):
     /start - start a bot
     /clear - clear conversation and context
     /help - ask for help
+    /simple_question - ask any question
     /question_about_taro - ask about taro 
     """
     await message.reply(help_command)
 
 
-@dispatcher.message_handler(commands=['question_about_taro'])
+@dispatcher.message_handler(commands=['simple_question'])
 async def question_about_taro(message: types.Message):
     """
     A handler to process the user's input and generate a response using the chatGPT API.
     """
+
     print(f">» USER: \n{message.text}")
+    await bot.send_message(chat_id=message.chat.id, text='Write question')
+    response = await get_question()
 
-    # ----------------MY CODE STARTS HERE----------------
+
+    # # ----------------MY CODE STARTS HERE----------------
+    # additional_prompt = """
+    # Find a peaceful, relaxed feeling. Feel comfortable and confident.
+    # Imagine that you can hear the universe and are a good fortune teller.
+    # """
+    # answer = get_query(additional_prompt, response)
+
+    # # ----------------MY CODE ENDS HERE----------------
+
+    # print(f">» llm: \nwriting...")
+    # await bot.send_message(chat_id=message.chat.id, text='writing...')
+
+    # print(f">» llm: \n{answer}")
+    # await bot.send_message(chat_id=message.chat.id, text=f"{answer}")
 
 
-    retriver_answer = retriever.get_relevant_documents(
-        message.text
-    )
-    retriver_str_answer = [split.page_content for split in retriver_answer]
-    answer = get_retriever(retriver_str_answer[0], message.text)
+@dispatcher.message_handler()
+async def get_question(message: types.Message):
 
-    # ----------------MY CODE ENDS HERE----------------
+    print(message.text)
+    return 
 
-    print(f">» llm: \nwriting...")
-    await bot.send_message(chat_id=message.chat.id, text='writing...')
 
-    print(f">» llm: \n{answer}")
-    await bot.send_message(chat_id=message.chat.id, text=f"{answer}")
+# @dispatcher.message_handler(commands=['question_about_taro'])
+# async def question_about_taro(message: types.Message):
+#     """
+#     A handler to process the user's input and generate a response using the chatGPT API.
+#     """
+#     print(f">» USER: \n{message.text}")
+
+#     # ----------------MY CODE STARTS HERE----------------
+#     retriver_answer = retriever.get_relevant_documents(
+#         message.text
+#     )
+#     retriver_str_answer = [split.page_content for split in retriver_answer]
+#     answer = get_retriever(retriver_str_answer[0], message.text)
+
+#     # ----------------MY CODE ENDS HERE----------------
+
+#     print(f">» llm: \nwriting...")
+#     await bot.send_message(chat_id=message.chat.id, text='writing...')
+
+#     print(f">» llm: \n{answer}")
+#     await bot.send_message(chat_id=message.chat.id, text=f"{answer}")
+
 
 executor.start_polling(dispatcher, skip_updates=True)
 # if __name__ == '__main__':
