@@ -116,40 +116,46 @@ async def helper(message: types.Message):
     """
     await message.reply(help_command)
 
+STATE = None
 
-@dispatcher.message_handler(commands=['simple_question'])
-async def question_about_taro(message: types.Message):
+@dispatcher.message_handler(commands=['simple_question', 'question_about_taro'])
+async def define_state(message: types.Message):
     """
     A handler to process the user's input and generate a response using the chatGPT API.
     """
 
     print(f">» USER: \n{message.text}")
-    await bot.send_message(chat_id=message.chat.id, text='Write question')
-    response = await get_question()
-
-
-    # # ----------------MY CODE STARTS HERE----------------
-    # additional_prompt = """
-    # Find a peaceful, relaxed feeling. Feel comfortable and confident.
-    # Imagine that you can hear the universe and are a good fortune teller.
-    # """
-    # answer = get_query(additional_prompt, response)
-
-    # # ----------------MY CODE ENDS HERE----------------
-
-    # print(f">» llm: \nwriting...")
-    # await bot.send_message(chat_id=message.chat.id, text='writing...')
-
-    # print(f">» llm: \n{answer}")
-    # await bot.send_message(chat_id=message.chat.id, text=f"{answer}")
+    if message.text == '/simple_question':
+        global STATE
+        STATE = 'simple_question'
+        await bot.send_message(chat_id=message.chat.id, text='Write your question')
+    
 
 
 @dispatcher.message_handler()
 async def get_question(message: types.Message):
+    
+    if STATE == 'simple_question':
 
+        # ----------------MY CODE STARTS HERE----------------
+        additional_prompt = """
+        Find a peaceful, relaxed feeling. Feel comfortable and confident.
+        Imagine that you can hear the universe and are a good fortune teller.
+        Answer only thre sentences.
+        """
+        answer = get_query(additional_prompt, message.text)
+
+        # ----------------MY CODE ENDS HERE----------------
+
+    print(f">» llm: \nwriting...")
+    await bot.send_message(chat_id=message.chat.id, text='writing...')
+
+    print(f">» llm: \n{answer}")
+    await bot.send_message(chat_id=message.chat.id, text=f"{answer}")
+    
     print(message.text)
-    return 
 
+executor.start_polling(dispatcher, skip_updates=True)
 
 # @dispatcher.message_handler(commands=['question_about_taro'])
 # async def question_about_taro(message: types.Message):
@@ -174,7 +180,7 @@ async def get_question(message: types.Message):
 #     await bot.send_message(chat_id=message.chat.id, text=f"{answer}")
 
 
-executor.start_polling(dispatcher, skip_updates=True)
+
 # if __name__ == '__main__':
 #     print("Starting...")
 #     executor.start_polling(dispatcher, skip_updates=True)
