@@ -1,15 +1,18 @@
+import asyncio
 import os
 
+from aiogram.utils import executor
 from aiogram import Bot, Dispatcher, executor, types
 from langchain.vectorstores import FAISS
 import pickle
 
-TG_TOKEN = TG_TOKEN_PATH.read_text().strip()
-
+# TG_TOKEN = TG_TOKEN_PATH.read_text().strip()
+TG_TOKEN = '7431248846:AAGT3wbL8IbdumwvdLH1ZwWHbmftV6sL2Pw'
 os.environ['VERBOSE'] = 'True'
 
 
 # ------  Initialize bot and dispatcher --------------
+
 bot = Bot(token=TG_TOKEN)
 dispatcher = Dispatcher(bot)
 
@@ -28,13 +31,64 @@ retriever = db.as_retriever(
     score_threshold=0.9,  # минимальный порог для поиска "similarity_score_threshold"
 )
 
-# ----------------MY CODE STARTS HERE----------------
+# ---------------ADDITIONAL FUNCTIONS ----------------
 
-def clear_past():
-    """
-    A function to clear the previous conversation and context.
-    """
-    reference.response = ''
+def get_query(additional_prompt, main_input):
+  """Function that returns response from hugging face API open model.
+  """
+
+  # Combine the additional prompt and main input with a special token
+  query = f"{additional_prompt} [END_PROMPT] {main_input}"
+
+  api_url = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3"
+
+  headers = {
+      "Authorization": "Bearer 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",
+      "Content-Type": "application/json"
+  }
+
+  data = {
+      "inputs": query,
+      "parameters": {
+          "max_length": 10000,  # Adjust as needed
+          "temperature": 0.9  # Adjust as needed
+      }
+  }
+
+  # Send the API request
+  response = requests.post(api_url, headers=headers, json=data)
+
+  # Parse the response
+  if response.status_code == 200:
+      output = response.json()
+      # Extract the main output, excluding the additional prompt
+      main_output = output[0]['generated_text'].split("[END_PROMPT]")[1].strip()
+      main_output = main_output.replace(main_input, '').replace('\n', '').strip()
+      main_output = main_output.split('.')[:3]
+
+  else:
+      print(f"Error: {response.status_code} - {response.text}")
+
+  return '.'.join(main_output)
+
+
+def get_retriever(retriever_answer, question='What can you tell about taro?'):
+  """
+  Функция забирает суммаризацию на предсказание одной карты.
+  Здесь лучше всего работает mistral.
+  """
+
+
+  additional_prompt = """
+      Imagine that you know everything about taro. Return only the detailed answer.
+      Use the following information if it is useful:
+      {}
+      """.format(' '.join(retriever_answer))
+  main_input = "{}".format(question)
+
+  return get_query(additional_prompt, main_input)
+
+# ----------------MY CODE STARTS HERE----------------
 
 
 @dispatcher.message_handler(commands=['start'])
@@ -42,18 +96,8 @@ async def welcome(message: types.Message):
     """
     A handler to welcome the user and clear past conversation and context.
     """
-    clear_past()
     await message.reply("Hello! \n I can help you with taro and predictiona!\
                         \nWhat would you like to do?")
-
-
-@dispatcher.message_handler(commands=['clear'])
-async def clear(message: types.Message):
-    """
-    A handler to clear the previous conversation and context.
-    """
-    clear_past()
-    await message.reply("I cleared last conversation and context.")
 
 
 @dispatcher.message_handler(commands=['help'])
@@ -63,14 +107,15 @@ async def helper(message: types.Message):
     """
     help_command = """
     Hello! I am taro chat-bot. Please use the following commands:
-    /start - 
+    /start - start a bot
     /clear - clear conversation and context
     /help - ask for help
+    /question_about_taro - ask about taro 
     """
     await message.reply(help_command)
 
 
-@dispatcher.message_handler()
+@dispatcher.message_handler(commands=['question_about_taro'])
 async def question_about_taro(message: types.Message):
     """
     A handler to process the user's input and generate a response using the chatGPT API.
@@ -94,7 +139,8 @@ async def question_about_taro(message: types.Message):
     print(f">» llm: \n{answer}")
     await bot.send_message(chat_id=message.chat.id, text=f"{answer}")
 
-if __name__ == '__main__':
-    print("Starting...")
-    executor.start_polling(dispatcher, skip_updates=True)
-    print("Stopped")
+executor.start_polling(dispatcher, skip_updates=True)
+# if __name__ == '__main__':
+#     print("Starting...")
+#     executor.start_polling(dispatcher, skip_updates=True)
+#     print("Stopped")
