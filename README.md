@@ -2,6 +2,8 @@
 
 Найти бот можно в телеграме по https://t.me/slemary_taro_bot    
 /start - запустить бота   
+Видео-инструкция есть здесь: IMG_2600.MP4    
+Если бот не отвечает, напишите мне в телеграм @hellowtriangle, но он должен работать непрерывно  
 
 https://github.com/MaryIzo/taro_bot/tree/master   
 
