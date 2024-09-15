@@ -5,3 +5,50 @@ writing...
 >» llm: 
 The answer is most likely yes. You have two yes cards ( Six of Wands and Four of Wands ) and one neutral card ( Four of Wands is a neutral card in this deck ). This suggests that a positive outcome is most likely, but it may take some time to come about
 Hello
+>» USER: 
+/yes_or_no
+>» USER: 
+/yes_or_no
+>» USER: 
+/yes_or_no
+>» llm: 
+writing...
+>» llm: 
+Based on the cards drawn, we have: Four of Swords from the Swords suit, Two of The Lovers from the Cups suit, and The Star from the Star court card.      Since The Star is not a no card and is a positive card in general, it raises the overall answer to a positive. However, The Four of Swords is a neutral card, so it does not provide an explicit yes
+Dudu
+>» llm: 
+writing...
+>» llm: 
+Based on the three cards requested for a question, the answer is uncertain, as two of the cards are yes cards (knight of wands and two of cups) and one is a no card (nine of swords). The two of cups is a card that typically represents emotional harmony and enjoying life, which can be interpreted as a positive sign. However, the nine of swords is a card that is associated with extreme anxiety, restlessness, and disturbed sleep;
+Tomorrow will be sunny?
+>» USER: 
+/question_about_taro
+>» llm: 
+writing...
+>» llm: 
+The Minor Arcana cards are a collection of fifty-six cards that remain in a traditional deck and are known as the Minor Arcana. They are arranged into four suits: Wands, Pentacles, Cups, and Swords. Each suit has ten numbered cards from Ace to Ten, and four court cards: Page, Knight, Queen, and King
+What cards are arcana cards?
+>» USER: 
+/one_card
+>» llm: 
+writing...
+>» llm: 
+One card for your events:  UPRIGHT MEANING The upright meaning of the Ace of Wands is auspicious for every aspect of your life
+ In a spread, it overrules any negative minor arcana cards close by (just like the major arcana card XIX, The Sun)
+ The Ace predicts new beginnings, enterprise, and invention and often relates to work issues and projects
+ It’s a happy card for creative work, too
+ With this Ace, you experience a flash of inspiration and know what do next to give form to your concept
+ As you conceive ideas, so the card works at a literal level as a phallic symbol, for male virility and starting a family
+ An additional meaning of the card is travel and adventure, particularly when it appears in a reading with the Three or Eight of Wands (see  pages 208  and 218 )
+ In a reading, one Ace brings a focus on the life area according to the suit, which can set the theme of the reading
+ If two or more Aces appear near each other in a reading, it means the following:   Two Aces:  An important partnership   Three Aces:  Good news   Four Aces:  Excitement, beginnings, and potential 
+Hi
+>» USER: 
+/past_present_future
+>» llm: 
+writing...
+>» llm: 
+past: The user felt a sense of peace and relaxation, confident and comfortable. They imagined themselves as a fortune teller, able to interpret the powerful meaning of the Ace of Pentacles for all aspects of their life. In a spread, the Ace indicated opportunities closing by, such as minor arcane cards like the Sun and X-X, predicting happiness and contentment
+present: You are asked to visualize a peaceful, relaxed feeling, imagine yourself as a good fortune teller, and make only three sentences. The eight of cups reveals a time of restlessness when it feels as if something is missing. Work and relationshipships may appear harmonious from the outside, but your intuition is nagging you
+future: The tarot card you pulled, the upright Fool, signifies new beginnings and following your heart's desire, even though the journey ahead is not without danger. This card ages well for those embarking on new enterprises and educational courses, and with sensible planning, it's a time for optimism and a fresh perspective. The Fool brings an opportunity to start over or feel young again or excited at the prospect of a new way of living
+What about my work?

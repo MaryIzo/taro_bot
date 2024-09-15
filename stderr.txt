@@ -13,3 +13,10 @@ Updates were skipped successfully.
 You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
   warnings.warn(
 Updates were skipped successfully.
+/root/taro_bot/.venvtaro/lib/python3.10/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_name" in HuggingFaceInferenceAPIEmbeddings has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+Updates were skipped successfully.
+/root/taro_bot/taro_bot.py:237: LangChainDeprecationWarning: The method `BaseRetriever.get_relevant_documents` was deprecated in langchain-core 0.1.46 and will be removed in 1.0. Use invoke instead.
+  retriver_answer = retriever.get_relevant_documents(
