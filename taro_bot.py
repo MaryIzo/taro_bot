@@ -180,7 +180,7 @@ async def helper(message: types.Message):
     /yes_or_no  - yes or no answer on your question
     /one_card_question - answer on one card
     /one_card - one day card 
-    /past_present_future - past, presend and future for your question
+    /past_present_future - different times for you
     /the_celtic_cross - celtic cross for you
     
     /simple_question - ask any question
