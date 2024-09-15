@@ -174,9 +174,13 @@ async def helper(message: types.Message):
     Hello! I am taro chat-bot. Please use the following commands:
     /start - start a bot
     /help - ask for help
-    /simple_question - ask any question
-    /one_card - one day card 
     /question_about_taro - ask about taro 
+    /one_card - one day card 
+    /one_card_question - answer on one card
+    /past_present_future - past, presend and future for your question
+    /the_celtic_cross - celtic cross for you
+    /yes_or_no  - yes or no answer on your question
+    /simple_question - ask any question
     """
     await message.reply(help_command)
 
@@ -184,7 +188,11 @@ async def helper(message: types.Message):
 @dispatcher.message_handler(commands=[
     'simple_question', 
     'one_card', 
-    'question_about_taro'
+    'question_about_taro',
+    "one_card_question", 
+    "past_present_future", 
+    "the_celtic_cross", 
+    "yes_or_no"
     ])
 async def define_state(message: types.Message):
     """
@@ -201,22 +209,31 @@ async def define_state(message: types.Message):
     elif message.text == '/question_about_taro':
         STATE = 'question_about_taro'
         await bot.send_message(chat_id=message.chat.id, text='Write your question about taro')
-
+    elif message.text == "/one_card_question":
+        STATE = 'one_card_question'
+        await bot.send_message(chat_id=message.chat.id, text='Write your question about anyting')
+    elif message.text == "/past_present_future":
+        STATE = 'past_present_future'
+        await bot.send_message(chat_id=message.chat.id, text='Write your question')
+    elif message.text ==  "/the_celtic_cross":
+        STATE = 'the_celtic_cross'
+        await bot.send_message(chat_id=message.chat.id, text='Write your question')
+    elif message.text ==  "/yes_or_no":
+        STATE = 'yes_or_no'
+        await bot.send_message(chat_id=message.chat.id, text='Write your question for yes or no')
 
 @dispatcher.message_handler()
 async def get_question(message: types.Message):
     
     global STATE
 
-    if STATE == 'simple_question':
-
-        # ----------------MY CODE STARTS HERE----------------
-        additional_prompt = """
-        Find a peaceful, relaxed feeling. Feel comfortable and confident.
-        Imagine that you can hear the universe and are a good fortune teller.
-        Answer only thre sentences.
-        """
-        answer = get_query(additional_prompt, message.text)
+    if STATE == "question_about_taro":
+        
+        retriver_answer = retriever.get_relevant_documents(
+            message.text
+        )
+        retriver_str_answer = [split.page_content for split in retriver_answer]
+        answer = get_retriever(retriver_str_answer[0], message.text)
 
     elif STATE == 'one_card':
 
@@ -225,13 +242,68 @@ async def get_question(message: types.Message):
         random_card = '\n'.join(cards_meaning_splits[random_key])
         answer = ' '.join([additional_prompt, random_card])
 
-    elif STATE == "question_about_taro":
-        
-        retriver_answer = retriever.get_relevant_documents(
-            message.text
-        )
-        retriver_str_answer = [split.page_content for split in retriver_answer]
-        answer = get_retriever(retriver_str_answer[0], message.text)
+    elif STATE == "one_card_question":
+
+        random_key = random.choice(list(cards_meaning_splits.keys()))
+        random_card = ' '.join(cards_meaning_splits[random_key])
+        answer = get_one_card_prediction(
+            random_card,
+            f' Answer on question {message.text}.'
+        )            
+
+    elif STATE == "past_present_future":
+
+        times = {0: 'past', 1: 'present', 2: 'future'}
+        answer = []
+        for key, val in times.items():
+            random_key = random.choice(list(cards_meaning_splits.keys()))
+            random_card = ' '.join(cards_meaning_splits[random_key])
+            card_answer = get_one_card_prediction(random_card, f' Answer in {val} tense.')
+            answer.append( f"""{val}: {card_answer}""")
+
+        answer = '\n'.join(answer)
+
+    elif STATE == "the_celtic_cross":
+
+        questions = {
+            0: "1 Your situation",
+            1: "2 Responsibilities",
+            2: "3 Limitations and the past",
+            3: "4 What supports you",
+            4: "5 What opposes you",
+            5: "6 Achievements",
+            6: "7 Attraction and relationships",
+            7: "8 Work, health, and communication",
+            8: "9 What is hidden",
+            9: "10 The future environment; the outcome"
+        }
+        for key, val in questions.items():
+            random_key = random.choice(list(cards_meaning_splits.keys()))
+            random_card = ' '.join(cards_meaning_splits[random_key])
+
+            answer = []
+            card_answer = get_one_card_prediction(random_card, f' Answer on question {val}.')
+            answer.append( f"""{val}: {card_answer}""")
+
+        answer = '\n'.join(answer)
+
+    elif STATE == "yes_or_no": 
+
+        test_cards = []
+        for i in range(3):
+            test_cards.append(random.choice(list(cards_meaning_splits.keys())))
+
+        answer = get_yes_or_no(test_cards)
+
+    elif STATE == 'simple_question':
+
+        additional_prompt = """
+            Find a peaceful, relaxed feeling. Feel comfortable and confident.
+            Imagine that you can hear the universe and are a good fortune teller.
+            Answer only thre sentences.
+        """
+        answer = get_query(additional_prompt, message.text)
+
     else:
         answer = 'Something went wrong. Try again.'
 
