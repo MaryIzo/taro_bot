@@ -280,11 +280,12 @@ async def get_question(message: types.Message):
             8: "9 What is hidden",
             9: "10 The future environment; the outcome"
         }
+        answer = []
+
         for key, val in questions.items():
             random_key = random.choice(list(cards_meaning_splits.keys()))
             random_card = ' '.join(cards_meaning_splits[random_key])
 
-            answer = []
             card_answer = get_one_card_prediction(random_card, f' Answer on question {val}.')
             answer.append( f"""{val}: {card_answer}""")
 
