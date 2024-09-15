@@ -174,12 +174,15 @@ async def helper(message: types.Message):
     Hello! I am taro chat-bot. Please use the following commands:
     /start - start a bot
     /help - ask for help
+    
     /question_about_taro - ask about taro 
-    /one_card - one day card 
+    
+    /yes_or_no  - yes or no answer on your question
     /one_card_question - answer on one card
+    /one_card - one day card 
     /past_present_future - past, presend and future for your question
     /the_celtic_cross - celtic cross for you
-    /yes_or_no  - yes or no answer on your question
+    
     /simple_question - ask any question
     """
     await message.reply(help_command)
