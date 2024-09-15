@@ -62,6 +62,6 @@ to be done
 /start - запустить бота   
 /help - вызвать меню команд   
     
-python3 taro_bot.py 1>stdout.txt 2>stderr.txt &     
+python3 taro_bot.py 1>>stdout.txt 2>>stderr.txt &     
 ps aux | grep python    
 kill -9 8758   
