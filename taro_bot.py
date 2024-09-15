@@ -162,7 +162,7 @@ async def welcome(message: types.Message):
     A handler to welcome the user and clear past conversation and context.
     """
     await message.reply("Hello! \n I can help you with taro and prediction!\
-                        \nWhat would you like to do? Press \help ")
+                        \nWhat would you like to do? Press /help ")
 
 
 @dispatcher.message_handler(commands=['help'])

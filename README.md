@@ -1,6 +1,7 @@
 # Проект
 
-Найти бот можно в телеграме по https://t.me/slemary_taro_bot
+Найти бот можно в телеграме по https://t.me/slemary_taro_bot    
+/start - запустить бота   
 
 https://github.com/MaryIzo/taro_bot/tree/master   
 
@@ -13,7 +14,7 @@ Taro bot
 ## Запуск   
 
     /start - запустить бота
-    /help - вызвать менбшку команд
+    /help - вызвать меню команд
     
     /question_about_taro - задать вопрос о картах таро (использование RAG)
     
@@ -56,4 +57,11 @@ Taro bot
 to be done  
 
 ## Деплой (где развернули приложение, почему, особенности взаимодействия с пользователем)
-Тест: https://t.me/slemary_taro_bot    
+Тест: https://t.me/slemary_taro_bot      
+
+/start - запустить бота   
+/help - вызвать меню команд   
+    
+python3 taro_bot.py 1>stdout.txt 2>stderr.txt &     
+ps aux | grep python    
+kill -9 8758   
