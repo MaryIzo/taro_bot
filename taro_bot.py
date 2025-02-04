@@ -14,7 +14,7 @@ import random
 STATE = None
 
 # TG_TOKEN = TG_TOKEN_PATH.read_text().strip()
-TG_TOKEN = '7431248846:AAGT3wbL8IbdumwvdLH1ZwWHbmftV6sL2Pw'
+TG_TOKEN = '......................'
 os.environ['VERBOSE'] = 'True'
 
 
@@ -53,7 +53,7 @@ def get_query(additional_prompt, main_input):
   api_url = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3"
 
   headers = {
-      "Authorization": "Bearer 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",
+      "Authorization": "Bearer ..........................",
       "Content-Type": "application/json"
   }
 
